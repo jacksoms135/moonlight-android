@@ -155,40 +155,37 @@ public class VirtualControllerConfigurationLoader {
     }
 
 
-    private static final int TRIGGER_L_BASE_X = 1;
-    private static final int TRIGGER_R_BASE_X = 92;
-    private static final int TRIGGER_DISTANCE = 23;
-    private static final int TRIGGER_BASE_Y = 31;
-    private static final int TRIGGER_WIDTH = 12;
-    private static final int TRIGGER_HEIGHT = 9;
+     private static final int TRIGGER_L_BASE_X = 2;
+    private static final int TRIGGER_R_BASE_X = 104;
+    private static final int TRIGGER_DISTANCE = 14;
+    private static final int TRIGGER_BASE_Y = 3;
+    private static final int TRIGGER_WIDTH = 11;
+    private static final int TRIGGER_HEIGHT = 8;
 
-    // Face buttons are defined based on the Y button (button number 9)
-    private static final int BUTTON_BASE_X = 106;
-    private static final int BUTTON_BASE_Y = 1;
+    private static final int BUTTON_BASE_X = 108;
+    private static final int BUTTON_BASE_Y = 25;
     private static final int BUTTON_SIZE = 10;
 
-    private static final int DPAD_BASE_X = 4;
-    private static final int DPAD_BASE_Y = 41;
-    private static final int DPAD_SIZE = 30;
+    private static final int DPAD_BASE_X = 3;
+    private static final int DPAD_BASE_Y = 37;
+    private static final int DPAD_SIZE = 25;
 
-    private static final int ANALOG_L_BASE_X = 6;
-    private static final int ANALOG_L_BASE_Y = 4;
-    private static final int ANALOG_R_BASE_X = 98;
-    private static final int ANALOG_R_BASE_Y = 42;
-    private static final int ANALOG_SIZE = 26;
+    private static final int ANALOG_L_BASE_X = 23;
+    private static final int ANALOG_L_BASE_Y = 43;
+    private static final int ANALOG_R_BASE_X = 82;
+    private static final int ANALOG_R_BASE_Y = 43;
+    private static final int ANALOG_SIZE = 25;
 
-    private static final int L3_R3_BASE_Y = 60;
+    private static final int L3_R3_BASE_Y = 61;
 
-    private static final int START_X = 83;
-    private static final int BACK_X = 34;
-    private static final int START_BACK_Y = 64;
-    private static final int START_BACK_WIDTH = 12;
+    private static final int START_X = 68;
+    private static final int BACK_X = 48;
+    private static final int START_BACK_Y = 63;
+    private static final int START_BACK_WIDTH = 13;
     private static final int START_BACK_HEIGHT = 7;
 
-    // Make the Guide Menu be in the center of START and BACK menu
     private static final int GUIDE_X = START_X-BACK_X;
     private static final int GUIDE_Y = START_BACK_Y;
-
     public static void createDefaultLayout(final VirtualController controller, final Context context) {
 
         DisplayMetrics screen = context.getResources().getDisplayMetrics();
@@ -252,7 +249,7 @@ public class VirtualControllerConfigurationLoader {
             );
 
             controller.addElement(createLeftTrigger(
-                    1, "LT", -1, controller, context),
+                    1, "L2", -1, controller, context),
                     screenScale(TRIGGER_L_BASE_X, height),
                     screenScale(TRIGGER_BASE_Y, height),
                     screenScale(TRIGGER_WIDTH, height),
@@ -260,7 +257,7 @@ public class VirtualControllerConfigurationLoader {
             );
 
             controller.addElement(createRightTrigger(
-                    1, "RT", -1, controller, context),
+                    1, "R2", -1, controller, context),
                     screenScale(TRIGGER_R_BASE_X + TRIGGER_DISTANCE, height) + rightDisplacement,
                     screenScale(TRIGGER_BASE_Y, height),
                     screenScale(TRIGGER_WIDTH, height),
@@ -269,7 +266,7 @@ public class VirtualControllerConfigurationLoader {
 
             controller.addElement(createDigitalButton(
                     VirtualControllerElement.EID_LB,
-                    ControllerPacket.LB_FLAG, 0, 1, "LB", -1, controller, context),
+                    ControllerPacket.LB_FLAG, 0, 1, "L1", -1, controller, context),
                     screenScale(TRIGGER_L_BASE_X + TRIGGER_DISTANCE, height),
                     screenScale(TRIGGER_BASE_Y, height),
                     screenScale(TRIGGER_WIDTH, height),
@@ -278,7 +275,7 @@ public class VirtualControllerConfigurationLoader {
 
             controller.addElement(createDigitalButton(
                     VirtualControllerElement.EID_RB,
-                    ControllerPacket.RB_FLAG, 0, 1, "RB", -1, controller, context),
+                    ControllerPacket.RB_FLAG, 0, 1, "R1", -1, controller, context),
                     screenScale(TRIGGER_R_BASE_X, height) + rightDisplacement,
                     screenScale(TRIGGER_BASE_Y, height),
                     screenScale(TRIGGER_WIDTH, height),
@@ -301,7 +298,7 @@ public class VirtualControllerConfigurationLoader {
 
             controller.addElement(createDigitalButton(
                     VirtualControllerElement.EID_BACK,
-                    ControllerPacket.BACK_FLAG, 0, 2, "BACK", -1, controller, context),
+                    ControllerPacket.BACK_FLAG, 0, 2, "SELECT", -1, controller, context),
                     screenScale(BACK_X, height),
                     screenScale(START_BACK_Y, height),
                     screenScale(START_BACK_WIDTH, height),
