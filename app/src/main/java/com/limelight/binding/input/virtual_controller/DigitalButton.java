@@ -133,35 +133,46 @@ public class DigitalButton extends VirtualControllerElement {
         invalidate();
     }
 
-    @Override
-    protected void onElementDraw(Canvas canvas) {
-        // set transparent background
-        canvas.drawColor(Color.TRANSPARENT);
+@Override
+protected void onElementDraw(Canvas canvas) {
+    canvas.drawColor(Color.TRANSPARENT);
 
+    // Fundo preto translúcido
+    paint.setStyle(Paint.Style.FILL);
+    paint.setColor(Color.argb(isPressed() ? 190 : 120, 0, 0, 0));
+
+    rect.left = 2;
+    rect.top = 2;
+    rect.right = getWidth() - 2;
+    rect.bottom = getHeight() - 2;
+
+    canvas.drawOval(rect, paint);
+
+    // Borda branca/translúcida
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setStrokeWidth(getDefaultStrokeWidth());
+    paint.setColor(Color.argb(180, 255, 255, 255));
+    canvas.drawOval(rect, paint);
+
+    if (icon != -1) {
+        Drawable d = getResources().getDrawable(icon);
+        d.setBounds(5, 5, getWidth() - 5, getHeight() - 5);
+        d.draw(canvas);
+    } else {
+        // Texto branco
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
         paint.setTextSize(getPercent(getWidth(), 25));
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setStrokeWidth(getDefaultStrokeWidth());
 
-        paint.setColor(isPressed() ? pressedColor : getDefaultColor());
-        paint.setStyle(Paint.Style.STROKE);
-
-        rect.left = rect.top = paint.getStrokeWidth();
-        rect.right = getWidth() - rect.left;
-        rect.bottom = getHeight() - rect.top;
-
-        canvas.drawOval(rect, paint);
-
-        if (icon != -1) {
-            Drawable d = getResources().getDrawable(icon);
-            d.setBounds(5, 5, getWidth() - 5, getHeight() - 5);
-            d.draw(canvas);
-        } else {
-            paint.setStyle(Paint.Style.FILL_AND_STROKE);
-            paint.setStrokeWidth(getDefaultStrokeWidth()/2);
-            canvas.drawText(text, getPercent(getWidth(), 50), getPercent(getHeight(), 63), paint);
-        }
+        canvas.drawText(
+                text,
+                getPercent(getWidth(), 50),
+                getPercent(getHeight(), 63),
+                paint
+        );
     }
-
+}
     private void onClickCallback() {
         _DBG("clicked");
         // notify listeners
