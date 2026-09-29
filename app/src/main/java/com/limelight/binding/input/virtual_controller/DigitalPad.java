@@ -35,118 +35,84 @@ public class DigitalPad extends VirtualControllerElement {
     }
 
     @Override
-    protected void onElementDraw(Canvas canvas) {
-        // set transparent background
-        canvas.drawColor(Color.TRANSPARENT);
+protected void onElementDraw(Canvas canvas) {
+    canvas.drawColor(Color.TRANSPARENT);
 
-        paint.setTextSize(getPercent(getCorrectWidth(), 20));
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setStrokeWidth(getDefaultStrokeWidth());
+    float w = getWidth();
+    float h = getHeight();
 
-        if (direction == DIGITAL_PAD_DIRECTION_NO_DIRECTION) {
-            // draw no direction rect
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(getDefaultColor());
-            canvas.drawRect(
-                    getPercent(getWidth(), 36), getPercent(getHeight(), 36),
-                    getPercent(getWidth(), 63), getPercent(getHeight(), 63),
-                    paint
-            );
-        }
+    float cx = w / 2f;
+    float cy = h / 2f;
 
-        // draw left rect
-        paint.setColor(
-                (direction & DIGITAL_PAD_DIRECTION_LEFT) > 0 ? pressedColor : getDefaultColor());
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(
-                paint.getStrokeWidth()+DPAD_MARGIN, getPercent(getHeight(), 33),
-                getPercent(getWidth(), 33), getPercent(getHeight(), 66),
-                paint
-        );
+    float buttonW = w * 0.30f;
+    float buttonH = h * 0.30f;
+    float gap = w * 0.035f;
 
+    paint.setStrokeWidth(getDefaultStrokeWidth());
 
-        // draw up rect
-        paint.setColor(
-                (direction & DIGITAL_PAD_DIRECTION_UP) > 0 ? pressedColor : getDefaultColor());
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(
-                getPercent(getWidth(), 33), paint.getStrokeWidth()+DPAD_MARGIN,
-                getPercent(getWidth(), 66), getPercent(getHeight(), 33),
-                paint
-        );
+    // ESQUERDA
+    paint.setStyle(Paint.Style.FILL);
+    paint.setColor(Color.argb(
+            (direction & DIGITAL_PAD_DIRECTION_LEFT) != 0 ? 190 : 120,
+            0, 0, 0));
+    canvas.drawOval(
+            cx - gap - buttonW,
+            cy - buttonH / 2f,
+            cx - gap,
+            cy + buttonH / 2f,
+            paint);
 
-        // draw right rect
-        paint.setColor(
-                (direction & DIGITAL_PAD_DIRECTION_RIGHT) > 0 ? pressedColor : getDefaultColor());
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(
-                getPercent(getWidth(), 66), getPercent(getHeight(), 33),
-                getWidth() - (paint.getStrokeWidth()+DPAD_MARGIN), getPercent(getHeight(), 66),
-                paint
-        );
+    // DIREITA
+    paint.setColor(Color.argb(
+            (direction & DIGITAL_PAD_DIRECTION_RIGHT) != 0 ? 190 : 120,
+            0, 0, 0));
+    canvas.drawOval(
+            cx + gap,
+            cy - buttonH / 2f,
+            cx + gap + buttonW,
+            cy + buttonH / 2f,
+            paint);
 
-        // draw down rect
-        paint.setColor(
-                (direction & DIGITAL_PAD_DIRECTION_DOWN) > 0 ? pressedColor : getDefaultColor());
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawRect(
-                getPercent(getWidth(), 33), getPercent(getHeight(), 66),
-                getPercent(getWidth(), 66), getHeight() - (paint.getStrokeWidth()+DPAD_MARGIN),
-                paint
-        );
+    // CIMA
+    paint.setColor(Color.argb(
+            (direction & DIGITAL_PAD_DIRECTION_UP) != 0 ? 190 : 120,
+            0, 0, 0));
+    canvas.drawOval(
+            cx - buttonW / 2f,
+            cy - gap - buttonH,
+            cx + buttonW / 2f,
+            cy - gap,
+            paint);
 
-        // draw left up line
-        paint.setColor((
-                        (direction & DIGITAL_PAD_DIRECTION_LEFT) > 0 &&
-                                (direction & DIGITAL_PAD_DIRECTION_UP) > 0
-                ) ? pressedColor : getDefaultColor()
-        );
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawLine(
-                paint.getStrokeWidth()+DPAD_MARGIN, getPercent(getHeight(), 33),
-                getPercent(getWidth(), 33), paint.getStrokeWidth()+DPAD_MARGIN,
-                paint
-        );
+    // BAIXO
+    paint.setColor(Color.argb(
+            (direction & DIGITAL_PAD_DIRECTION_DOWN) != 0 ? 190 : 120,
+            0, 0, 0));
+    canvas.drawOval(
+            cx - buttonW / 2f,
+            cy + gap,
+            cx + buttonW / 2f,
+            cy + gap + buttonH,
+            paint);
 
-        // draw up right line
-        paint.setColor((
-                        (direction & DIGITAL_PAD_DIRECTION_UP) > 0 &&
-                                (direction & DIGITAL_PAD_DIRECTION_RIGHT) > 0
-                ) ? pressedColor : getDefaultColor()
-        );
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawLine(
-                getPercent(getWidth(), 66), paint.getStrokeWidth()+DPAD_MARGIN,
-                getWidth() - (paint.getStrokeWidth()+DPAD_MARGIN), getPercent(getHeight(), 33),
-                paint
-        );
+    // Setas brancas
+    paint.setColor(Color.WHITE);
+    paint.setTextAlign(Paint.Align.CENTER);
+    paint.setTextSize(getPercent(getCorrectWidth(), 18));
+    paint.setStyle(Paint.Style.FILL);
 
-        // draw right down line
-        paint.setColor((
-                        (direction & DIGITAL_PAD_DIRECTION_RIGHT) > 0 &&
-                                (direction & DIGITAL_PAD_DIRECTION_DOWN) > 0
-                ) ? pressedColor : getDefaultColor()
-        );
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawLine(
-                getWidth()-paint.getStrokeWidth(), getPercent(getHeight(), 66),
-                getPercent(getWidth(), 66), getHeight()-(paint.getStrokeWidth()+DPAD_MARGIN),
-                paint
-        );
+    canvas.drawText("◀", cx - gap - buttonW / 2f,
+            cy + paint.getTextSize() / 3f, paint);
 
-        // draw down left line
-        paint.setColor((
-                        (direction & DIGITAL_PAD_DIRECTION_DOWN) > 0 &&
-                                (direction & DIGITAL_PAD_DIRECTION_LEFT) > 0
-                ) ? pressedColor : getDefaultColor()
-        );
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawLine(
-                getPercent(getWidth(), 33), getHeight()-(paint.getStrokeWidth()+DPAD_MARGIN),
-                paint.getStrokeWidth()+DPAD_MARGIN, getPercent(getHeight(), 66),
-                paint
-        );
-    }
+    canvas.drawText("▶", cx + gap + buttonW / 2f,
+            cy + paint.getTextSize() / 3f, paint);
+
+    canvas.drawText("▲", cx,
+            cy - gap - buttonH / 2f + paint.getTextSize() / 3f, paint);
+
+    canvas.drawText("▼", cx,
+            cy + gap + buttonH / 2f + paint.getTextSize() / 3f, paint);
+}
 
     private void newDirectionCallback(int direction) {
         _DBG("direction: " + direction);
