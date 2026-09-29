@@ -65,14 +65,14 @@ import android.view.Display;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.view.MotionEvent;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.View;
-import android.view.View.OnGenericMotionListener;
-import android.view.View.OnSystemUiVisibilityChangeListener;
-import android.view.View.OnTouchListener;
-import android.view.Window;
+import com.limelight.nvstream.input.KeyboardPacket;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.view.inputmethod.InputMethodManager;
@@ -113,12 +113,11 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private KeyboardTranslator keyboardTranslator;
     private VirtualController virtualController;
 
-    private PreferenceConfiguration prefConfig;
-    private SharedPreferences tombstonePrefs;
-
-    private NvConnection conn;
-    private SpinnerDialog spinner;
-    private boolean displayedFailureDialog = false;
+    private LinearLayout pcKeyboardLayout;
+private TextView pcKeyboardToggle;
+private boolean pcKeyboardVisible = false;
+    private FrameLayout pcKeyboardOverlay;
+private Button pcKeyboardButton;
     private boolean connecting = false;
     private boolean connected = false;
     private boolean autoEnterPip = false;
@@ -210,7 +209,7 @@ public class Game extends Activity implements SurfaceHolder.Callback,
 
         // Inflate the content
         setContentView(R.layout.activity_game);
-
+setupPcKeyboard();
         // Start the spinner
         spinner = SpinnerDialog.displayDialog(this, getResources().getString(R.string.conn_establishing_title),
                 getResources().getString(R.string.conn_establishing_msg), true);
@@ -2696,5 +2695,191 @@ public class Game extends Activity implements SurfaceHolder.Callback,
             default:
                 return false;
         }
+    } private void setupPcKeyboard() {
+    pcKeyboardButton = new Button(this);
+    pcKeyboardButton.setText("⌨");
+    pcKeyboardButton.setTextSize(20);
+    pcKeyboardButton.setTextColor(Color.WHITE);
+
+    GradientDrawable buttonBg = new GradientDrawable();
+    buttonBg.setColor(Color.argb(150, 0, 0, 0));
+    buttonBg.setCornerRadius(20);
+    pcKeyboardButton.setBackground(buttonBg);
+
+    FrameLayout root = findViewById(android.R.id.content);
+
+    FrameLayout.LayoutParams buttonParams =
+            new FrameLayout.LayoutParams(120, 90);
+    buttonParams.leftMargin = 15;
+    buttonParams.topMargin = 120;
+
+    root.addView(pcKeyboardButton, buttonParams);
+
+    pcKeyboardLayout = new LinearLayout(this);
+    pcKeyboardLayout.setOrientation(LinearLayout.VERTICAL);
+    pcKeyboardLayout.setPadding(8, 8, 8, 8);
+    pcKeyboardLayout.setVisibility(View.GONE);
+
+    GradientDrawable keyboardBg = new GradientDrawable();
+    keyboardBg.setColor(Color.argb(210, 10, 10, 10));
+    keyboardBg.setCornerRadius(15);
+    pcKeyboardLayout.setBackground(keyboardBg);
+
+    FrameLayout.LayoutParams keyboardParams =
+            new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.WRAP_CONTENT);
+
+    keyboardParams.leftMargin = 10;
+    keyboardParams.rightMargin = 10;
+    keyboardParams.topMargin = 20;
+
+    root.addView(pcKeyboardLayout, keyboardParams);
+LinearLayout row1 = new LinearLayout(this);
+row1.setOrientation(LinearLayout.HORIZONTAL);
+
+row1.addView(createPcKey("ESC", KeyEvent.KEYCODE_ESCAPE));
+row1.addView(createPcKey("F1", KeyEvent.KEYCODE_F1));
+row1.addView(createPcKey("F2", KeyEvent.KEYCODE_F2));
+row1.addView(createPcKey("F3", KeyEvent.KEYCODE_F3));
+row1.addView(createPcKey("F4", KeyEvent.KEYCODE_F4));
+row1.addView(createPcKey("F5", KeyEvent.KEYCODE_F5));
+row1.addView(createPcKey("F6", KeyEvent.KEYCODE_F6));
+row1.addView(createPcKey("F7", KeyEvent.KEYCODE_F7));
+row1.addView(createPcKey("F8", KeyEvent.KEYCODE_F8));
+row1.addView(createPcKey("F9", KeyEvent.KEYCODE_F9));
+row1.addView(createPcKey("F10", KeyEvent.KEYCODE_F10));
+row1.addView(createPcKey("F11", KeyEvent.KEYCODE_F11));
+row1.addView(createPcKey("F12", KeyEvent.KEYCODE_F12));
+
+pcKeyboardLayout.addView(row1);
+ LinearLayout row2 = new LinearLayout(this);
+row2.setOrientation(LinearLayout.HORIZONTAL);
+
+row2.addView(createPcKey("1", KeyEvent.KEYCODE_1));
+row2.addView(createPcKey("2", KeyEvent.KEYCODE_2));
+row2.addView(createPcKey("3", KeyEvent.KEYCODE_3));
+row2.addView(createPcKey("4", KeyEvent.KEYCODE_4));
+row2.addView(createPcKey("5", KeyEvent.KEYCODE_5));
+row2.addView(createPcKey("6", KeyEvent.KEYCODE_6));
+row2.addView(createPcKey("7", KeyEvent.KEYCODE_7));
+row2.addView(createPcKey("8", KeyEvent.KEYCODE_8));
+row2.addView(createPcKey("9", KeyEvent.KEYCODE_9));
+row2.addView(createPcKey("0", KeyEvent.KEYCODE_0));
+row2.addView(createPcKey("BACK", KeyEvent.KEYCODE_DEL));
+
+pcKeyboardLayout.addView(row2);   pcKeyboardButton.setOnClickListener(v -> {
+   LinearLayout row3 = new LinearLayout(this);
+row3.setOrientation(LinearLayout.HORIZONTAL);
+
+row3.addView(createPcKey("TAB", KeyEvent.KEYCODE_TAB));
+row3.addView(createPcKey("Q", KeyEvent.KEYCODE_Q));
+row3.addView(createPcKey("W", KeyEvent.KEYCODE_W));
+row3.addView(createPcKey("E", KeyEvent.KEYCODE_E));
+row3.addView(createPcKey("R", KeyEvent.KEYCODE_R));
+row3.addView(createPcKey("T", KeyEvent.KEYCODE_T));
+row3.addView(createPcKey("Y", KeyEvent.KEYCODE_Y));
+row3.addView(createPcKey("U", KeyEvent.KEYCODE_U));
+row3.addView(createPcKey("I", KeyEvent.KEYCODE_I));
+row3.addView(createPcKey("O", KeyEvent.KEYCODE_O));
+row3.addView(createPcKey("P", KeyEvent.KEYCODE_P));
+
+pcKeyboardLayout.addView(row3);     pcKeyboardVisible = !pcKeyboardVisible;
+    LinearLayout row4 = new LinearLayout(this);
+row4.setOrientation(LinearLayout.HORIZONTAL);
+
+row4.addView(createPcKey("A", KeyEvent.KEYCODE_A));
+row4.addView(createPcKey("S", KeyEvent.KEYCODE_S));
+row4.addView(createPcKey("D", KeyEvent.KEYCODE_D));
+row4.addView(createPcKey("F", KeyEvent.KEYCODE_F));
+row4.addView(createPcKey("G", KeyEvent.KEYCODE_G));
+row4.addView(createPcKey("H", KeyEvent.KEYCODE_H));
+row4.addView(createPcKey("J", KeyEvent.KEYCODE_J));
+row4.addView(createPcKey("K", KeyEvent.KEYCODE_K));
+row4.addView(createPcKey("L", KeyEvent.KEYCODE_L));
+row4.addView(createPcKey("ENTER", KeyEvent.KEYCODE_ENTER));
+
+pcKeyboardLayout.addView(row4);    pcKeyboardLayout.setVisibility(
+     LinearLayout row5 = new LinearLayout(this);
+row5.setOrientation(LinearLayout.HORIZONTAL);
+
+row5.addView(createPcKey("SHIFT", KeyEvent.KEYCODE_SHIFT_LEFT));
+row5.addView(createPcKey("Z", KeyEvent.KEYCODE_Z));
+row5.addView(createPcKey("X", KeyEvent.KEYCODE_X));
+row5.addView(createPcKey("C", KeyEvent.KEYCODE_C));
+row5.addView(createPcKey("V", KeyEvent.KEYCODE_V));
+row5.addView(createPcKey("B", KeyEvent.KEYCODE_B));
+row5.addView(createPcKey("N", KeyEvent.KEYCODE_N));
+row5.addView(createPcKey("M", KeyEvent.KEYCODE_M));
+
+pcKeyboardLayout.addView(row5);           pcKeyboardVisible ? View.VISIBLE : View.GONE);
+ LinearLayout row6 = new LinearLayout(this);
+row6.setOrientation(LinearLayout.HORIZONTAL);
+
+row6.addView(createPcKey("CTRL", KeyEvent.KEYCODE_CTRL_LEFT));
+row6.addView(createPcKey("ALT", KeyEvent.KEYCODE_ALT_LEFT));
+row6.addView(createPcKey("SPACE", KeyEvent.KEYCODE_SPACE));
+row6.addView(createPcKey("←", KeyEvent.KEYCODE_DPAD_LEFT));
+row6.addView(createPcKey("↑", KeyEvent.KEYCODE_DPAD_UP));
+row6.addView(createPcKey("↓", KeyEvent.KEYCODE_DPAD_DOWN));
+row6.addView(createPcKey("→", KeyEvent.KEYCODE_DPAD_RIGHT));
+
+pcKeyboardLayout.addView(row6);   });
+    }aprivate Button createPcKey(String text, int keyCode) {
+    Button key = new Button(this);
+    key.setText(text);
+    key.setTextColor(Color.WHITE);
+    key.setTextSize(12);
+    key.setAllCaps(false);
+    key.setPadding(2, 2, 2, 2);
+
+    GradientDrawable bg = new GradientDrawable();
+    bg.setColor(Color.argb(180, 25, 25, 25));
+    bg.setStroke(1, Color.argb(180, 255, 255, 255));
+    bg.setCornerRadius(10);
+    key.setBackground(bg);
+
+    key.setTag(keyCode);
+
+    return key;
+    }private Button createPcKey(String text, int keyCode) {
+    Button key = new Button(this);
+    key.setText(text);
+    key.setTextColor(Color.WHITE);
+    key.setTextSize(12);
+    key.setAllCaps(false);
+    key.setPadding(2, 2, 2, 2);
+
+    GradientDrawable bg = new GradientDrawable();
+    bg.setColor(Color.argb(180, 25, 25, 25));
+    bg.setStroke(1, Color.argb(180, 255, 255, 255));
+    bg.setCornerRadius(10);
+    key.setBackground(bg);
+
+    key.setTag(keyCode);
+
+    return key;key.setOnTouchListener((v, event) -> {
+    if (conn == null) {
+        return false;
+    }
+
+    short translated = keyboardTranslator.translate(keyCode, -1);
+    if (translated == 0) {
+        return false;
+    }
+
+    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        conn.sendKeyboardInput(translated, KeyboardPacket.KEY_DOWN, (byte) 0, (byte) 0);
+        return true;
+    }
+
+    if (event.getAction() == MotionEvent.ACTION_UP ||
+            event.getAction() == MotionEvent.ACTION_CANCEL) {
+        conn.sendKeyboardInput(translated, KeyboardPacket.KEY_UP, (byte) 0, (byte) 0);
+        return true;
+    }
+
+    return true;
+});
     }
 }
