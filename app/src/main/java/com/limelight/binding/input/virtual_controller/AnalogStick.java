@@ -218,40 +218,50 @@ public class AnalogStick extends VirtualControllerElement {
     }
 
     @Override
-    protected void onElementDraw(Canvas canvas) {
-        // set transparent background
-        canvas.drawColor(Color.TRANSPARENT);
+protected void onElementDraw(Canvas canvas) {
+    canvas.drawColor(Color.TRANSPARENT);
 
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(getDefaultStrokeWidth());
+    // Base preta translúcida
+    paint.setStyle(Paint.Style.FILL);
+    paint.setColor(Color.argb(120, 0, 0, 0));
+    canvas.drawCircle(
+            getWidth() / 2,
+            getHeight() / 2,
+            radius_complete,
+            paint
+    );
 
-        // draw outer circle
-        if (!isPressed() || click_state == CLICK_STATE.SINGLE) {
-            paint.setColor(getDefaultColor());
-        } else {
-            paint.setColor(pressedColor);
-        }
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius_complete, paint);
+    // Contorno branco suave
+    paint.setStyle(Paint.Style.STROKE);
+    paint.setStrokeWidth(getDefaultStrokeWidth());
+    paint.setColor(Color.argb(150, 255, 255, 255));
+    canvas.drawCircle(
+            getWidth() / 2,
+            getHeight() / 2,
+            radius_complete,
+            paint
+    );
 
-        paint.setColor(getDefaultColor());
-        // draw dead zone
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius_dead_zone, paint);
+    // Miolo branco do analógico
+    paint.setStyle(Paint.Style.FILL);
+    paint.setColor(Color.argb(230, 255, 255, 255));
 
-        // draw stick depending on state
-        switch (stick_state) {
-            case NO_MOVEMENT: {
-                paint.setColor(getDefaultColor());
-                canvas.drawCircle(getWidth() / 2, getHeight() / 2, radius_analog_stick, paint);
-                break;
-            }
-            case MOVED_IN_DEAD_ZONE:
-            case MOVED_ACTIVE: {
-                paint.setColor(pressedColor);
-                canvas.drawCircle(position_stick_x, position_stick_y, radius_analog_stick, paint);
-                break;
-            }
-        }
+    if (stick_state == STICK_STATE.NO_MOVEMENT) {
+        canvas.drawCircle(
+                getWidth() / 2,
+                getHeight() / 2,
+                radius_analog_stick,
+                paint
+        );
+    } else {
+        canvas.drawCircle(
+                position_stick_x,
+                position_stick_y,
+                radius_analog_stick,
+                paint
+        );
     }
+}
 
     private void updatePosition(long eventTime) {
         // get 100% way
