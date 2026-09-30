@@ -2695,6 +2695,7 @@ setupPcKeyboard();
             default:
                 return false;
         }
+        }
      private void setupPcKeyboard() {
     pcKeyboardButton = new Button(this);
     pcKeyboardButton.setText("⌨");
@@ -2799,7 +2800,7 @@ row4.addView(createPcKey("K", KeyEvent.KEYCODE_K));
 row4.addView(createPcKey("L", KeyEvent.KEYCODE_L));
 row4.addView(createPcKey("ENTER", KeyEvent.KEYCODE_ENTER));
 
-pcKeyboardLayout.addView(row4);    pcKeyboardLayout.setVisibility(
+pcKeyboardLayout.addView(row4);    
      LinearLayout row5 = new LinearLayout(this);
 row5.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -2812,7 +2813,7 @@ row5.addView(createPcKey("B", KeyEvent.KEYCODE_B));
 row5.addView(createPcKey("N", KeyEvent.KEYCODE_N));
 row5.addView(createPcKey("M", KeyEvent.KEYCODE_M));
 
-pcKeyboardLayout.addView(row5);           pcKeyboardVisible ? View.VISIBLE : View.GONE);
+pcKeyboardLayout.addView(row5);           
  LinearLayout row6 = new LinearLayout(this);
 row6.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -2825,24 +2826,7 @@ row6.addView(createPcKey("↓", KeyEvent.KEYCODE_DPAD_DOWN));
 row6.addView(createPcKey("→", KeyEvent.KEYCODE_DPAD_RIGHT));
 
 pcKeyboardLayout.addView(row6);   
-    }private Button createPcKey(String text, int keyCode) {
-    Button key = new Button(this);
-    key.setText(text);
-    key.setTextColor(Color.WHITE);
-    key.setTextSize(12);
-    key.setAllCaps(false);
-    key.setPadding(2, 2, 2, 2);
-
-    GradientDrawable bg = new GradientDrawable();
-    bg.setColor(Color.argb(180, 25, 25, 25));
-    bg.setStroke(1, Color.argb(180, 255, 255, 255));
-    bg.setCornerRadius(10);
-    key.setBackground(bg);
-
-    key.setTag(keyCode);
-
-    return key;
-    }private Button createPcKey(String text, int keyCode) {
+    private Button createPcKey(String text, int keyCode) {
     Button key = new Button(this);
     key.setText(text);
     key.setTextColor(Color.WHITE);
