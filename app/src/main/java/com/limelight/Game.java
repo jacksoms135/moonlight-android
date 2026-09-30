@@ -50,8 +50,10 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.input.InputManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -65,17 +67,19 @@ import android.view.Display;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.view.MotionEvent;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.View;
+import android.view.View.OnGenericMotionListener;
+import android.view.View.OnSystemUiVisibilityChangeListener;
+import android.view.View.OnTouchListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.view.MotionEvent;
-import com.limelight.nvstream.input.KeyboardPacket;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,11 +117,16 @@ public class Game extends Activity implements SurfaceHolder.Callback,
     private KeyboardTranslator keyboardTranslator;
     private VirtualController virtualController;
 
+    private PreferenceConfiguration prefConfig;
+    private SharedPreferences tombstonePrefs;
+    private NvConnection conn;
+    private SpinnerDialog spinner;
+    private boolean displayedFailureDialog = false;
+
     private LinearLayout pcKeyboardLayout;
-private TextView pcKeyboardToggle;
-private boolean pcKeyboardVisible = false;
-    private FrameLayout pcKeyboardOverlay;
-private Button pcKeyboardButton;
+    private Button pcKeyboardButton;
+    private boolean pcKeyboardVisible = false;
+
     private boolean connecting = false;
     private boolean connected = false;
     private boolean autoEnterPip = false;
@@ -209,7 +218,7 @@ private Button pcKeyboardButton;
 
         // Inflate the content
         setContentView(R.layout.activity_game);
-setupPcKeyboard();
+        setupPcKeyboard();
         // Start the spinner
         spinner = SpinnerDialog.displayDialog(this, getResources().getString(R.string.conn_establishing_title),
                 getResources().getString(R.string.conn_establishing_msg), true);
