@@ -2826,7 +2826,8 @@ row6.addView(createPcKey("↓", KeyEvent.KEYCODE_DPAD_DOWN));
 row6.addView(createPcKey("→", KeyEvent.KEYCODE_DPAD_RIGHT));
 
 pcKeyboardLayout.addView(row6);   
-    private Button createPcKey(String text, int keyCode) {
+        }
+  private Button createPcKey(String text, int keyCode) {
     Button key = new Button(this);
     key.setText(text);
     key.setTextColor(Color.WHITE);
