@@ -2695,7 +2695,7 @@ setupPcKeyboard();
             default:
                 return false;
         }
-    } private void setupPcKeyboard() {
+     private void setupPcKeyboard() {
     pcKeyboardButton = new Button(this);
     pcKeyboardButton.setText("⌨");
     pcKeyboardButton.setTextSize(20);
@@ -2824,8 +2824,8 @@ row6.addView(createPcKey("↑", KeyEvent.KEYCODE_DPAD_UP));
 row6.addView(createPcKey("↓", KeyEvent.KEYCODE_DPAD_DOWN));
 row6.addView(createPcKey("→", KeyEvent.KEYCODE_DPAD_RIGHT));
 
-pcKeyboardLayout.addView(row6);   });
-    }aprivate Button createPcKey(String text, int keyCode) {
+pcKeyboardLayout.addView(row6);   
+    }private Button createPcKey(String text, int keyCode) {
     Button key = new Button(this);
     key.setText(text);
     key.setTextColor(Color.WHITE);
@@ -2858,7 +2858,7 @@ pcKeyboardLayout.addView(row6);   });
 
     key.setTag(keyCode);
 
-    return key;key.setOnTouchListener((v, event) -> {
+    key.setOnTouchListener((v, event) -> {
     if (conn == null) {
         return false;
     }
@@ -2880,6 +2880,9 @@ pcKeyboardLayout.addView(row6);   });
     }
 
     return true;
-});
+});    
+
+    return key;
     }
-}
+     }    
+
