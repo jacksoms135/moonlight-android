@@ -2769,7 +2769,7 @@ row2.addView(createPcKey("9", KeyEvent.KEYCODE_9));
 row2.addView(createPcKey("0", KeyEvent.KEYCODE_0));
 row2.addView(createPcKey("BACK", KeyEvent.KEYCODE_DEL));
 
-pcKeyboardLayout.addView(row2);   pcKeyboardButton.setOnClickListener(v -> {
+pcKeyboardLayout.addView(row2);   
    LinearLayout row3 = new LinearLayout(this);
 row3.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -2785,7 +2785,11 @@ row3.addView(createPcKey("I", KeyEvent.KEYCODE_I));
 row3.addView(createPcKey("O", KeyEvent.KEYCODE_O));
 row3.addView(createPcKey("P", KeyEvent.KEYCODE_P));
 
-pcKeyboardLayout.addView(row3);     pcKeyboardVisible = !pcKeyboardVisible;
+pcKeyboardLayout.addView(row3);   
+       pcKeyboardButton.setOnClickListener(v -> {
+    pcKeyboardVisible = !pcKeyboardVisible;
+    pcKeyboardLayout.setVisibility(pcKeyboardVisible ? View.VISIBLE : View.GONE);
+});      
     LinearLayout row4 = new LinearLayout(this);
 row4.setOrientation(LinearLayout.HORIZONTAL);
 
